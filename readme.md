@@ -138,9 +138,7 @@ The functionality will then be divided into two separate lists: MPV and PostMVP.
 	- Mobile view
 		- Vertical scrolling, column based
 		- Color changes will indicate which section is being viewed (sections =  input, recipe lists, ingredients lists)
-
-
-#### PostMVP EXAMPLE
+#### PostMVP
 
 	- Secondary API for photos (flickr? instagram?)
 	- Export to shopping list feature
@@ -216,3 +214,14 @@ function reverse(string) {
 	// here is the code to reverse a string of text
 }
 ```
+
+
+## Issues
+
+I want to restrict access to parts of the app that require user input data to be valid
+
+PrivateRoute might do the trick
+
+
+I want to have a fixed static header for the Results, Recipes, and About pages.  The Search page should not have a header
+Need to make sure that the header doesn't re-render when proceeding through the pages
