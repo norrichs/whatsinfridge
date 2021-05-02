@@ -1,14 +1,14 @@
 import React from "react";
+import {useHistory} from 'react-router-dom'
 // import {Redirect} from 'react-router-dom'
 
 const MultiItemInput = (props) => {
+	const history = useHistory()
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log("handleSubmit");
-		console.log(props);
-		props.handleSearch("gouda, spaghetti, dill");
-		
-		window.location.href = "/Results"
+		props.handleSearch("mozzarella, tomato, plantain");
+		// REDIRECT to results page on form submit
+		history.push("/Results")
 	};
 
 	return (

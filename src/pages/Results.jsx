@@ -3,30 +3,31 @@ import RecipeCondensed from "../components/RecipeCondensed";
 import IngredientMissing from "../components/IngredientMissing";
 import Header from "../components/Header";
 
-const Results = (props) => {
-	console.log('results props', props)
-
-
-	const dummyRecipeList = [
+const Results = ({resultRecipes}) => {
+	console.log('results props', resultRecipes)
+	const resultRecipesPlaceholder = [
 		{
-			name: "rec 1",
-			snippet: "beans, beans, beans",
+			title: "rec 1",
+			image: "beans, beans, beans",
 		},
 		{
-			name: "rec 2",
-			snippet: "carrots and pork",
+			title: "rec 2",
+			image: "carrots and pork",
 		},
 		{
-			name: "rec 3",
-			snippet: "rice and muck",
+			title: "rec 3",
+			image: "rice and muck",
 		},
 		{
-			name: "rec 4",
-			snippet: "cheese bits",
+			title: "rec 4",
+			image: "cheese bits",
 		},
 	];
-	const recipeResults = dummyRecipeList.map((recipe, index) => {
-		return <RecipeCondensed recipe={recipe} key={index} />;
+
+	// alert(resultRecipes)
+	console.log( resultRecipes)
+	const recipeDisplayArray = resultRecipes.map((recipe, index) => {
+		return <RecipeCondensed index={index} recipe={recipe} key={index} />;
 	});
 	const dummyMissing = [
 		"pickles",
@@ -46,13 +47,13 @@ const Results = (props) => {
 		<div className="results-page">
 			<Header />
 			<h1>you can make...</h1>
-			<section>{recipeResults}</section>
+			<section className="recipe-area">{recipeDisplayArray}</section>
 			<div className="missing-ingredients-header">
-				<h2>...do you have?</h2>
+				<div>...do you have?</div>
 				<button>refresh recipes</button>
 			</div>
 
-			<section>{missingIngredient}</section>
+			<section className="ingredients-area">{missingIngredient}</section>
 		</div>
 	);
 };

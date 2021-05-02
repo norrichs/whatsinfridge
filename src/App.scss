@@ -29,21 +29,32 @@ header nav {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	section {
+		height: 40vh;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		min-height: 0;
+		height: 40vh;
+		overflow-y: scroll;
+		padding: 10px;
+		gap: 0.25em;
+	}
+	section.recipe-area {
+	}
 
-  .missing-ingredients-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
+	.missing-ingredients-header {
+		height: 2em;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-content: flex-start;
+		border: 1px solid;
+	}
 
-  section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    gap: 0.25em;
-    margin: 0 0 1em 0;
-  }
+	section.ingredients-area {
+		background-color: antiquewhite;
+	}
 }
 
 .recipe-condensed {
@@ -52,25 +63,27 @@ header nav {
 	background-color: darkseagreen;
 	display: flex;
 	flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+	justify-content: space-between;
+	align-items: center;
 	padding: 0 0.5em;
 	border-radius: 5px;
 	div:first-of-type {
-    display: flex;
-    flex-direction: column;
+		display: flex;
+		flex-direction: column;
 
 		div:first-of-type {
+			display: flex;
+			flex-direction: row;
 			font-weight: 800;
 		}
 		div:last-of-type {
 			font-size: 0.75em;
 		}
 	}
-  div:last-of-type{
-    display: flex;
-    flex-direction: column;
-  }
+	div:last-of-type {
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 .missing-ingredient {

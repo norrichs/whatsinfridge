@@ -15,7 +15,7 @@ function App() {
 	// 		
 	const handleSearch = (searchTerm) => {
 		console.log("App handleSearch", searchTerm);
-		console.log(getResult(searchTerm))
+		getResult(searchTerm)
 	};
 	// Process form string to API compliant search string
 	const processSearchTerm = (searchTerm) => searchTerm.split(",").map((string) => string.trim()).join("%2C")
@@ -35,10 +35,19 @@ function App() {
 				},
 			}
 		);
+		console.log("App got response")
 		const data = await response.json();
-		console.log(data);
+		console.log('got api data',data);
 		setResultRecipes(data)
+		console.log('results set')
 	};
+
+	const loading = () => {
+		return <div>Loading...</div>
+	}
+	const loaded = () => {
+		return <Results resultRecipes= {resultRecipes} />
+	}
 
 	return (
 		<div className="App">
@@ -47,7 +56,7 @@ function App() {
 					<Search handleSearch={handleSearch} />
 				</Route>
 				<Route path="/Results">
-					<Results resultRecipes={resultRecipes}/>
+					{resultRecipes ? loaded() : loading()}
 				</Route>
 				<Route path="/Recipes">
 					<Recipes />

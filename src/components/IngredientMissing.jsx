@@ -1,7 +1,7 @@
 import React from "react";
 
 const IngredientMissing = ({ ingredient }) => {
-	console.log("Ingredient missing props", ingredient);
+	// console.log("Ingredient missing props", ingredient);
 
 	return (
 		<div className="missing-ingredient">
