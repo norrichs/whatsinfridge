@@ -35,7 +35,7 @@ const Results = ({
 
 	let missingIngredientsDisplay = null;
 	// console.log("missing ingredients (results)", missingIngredients);
-	if (missingIngredients != undefined) {
+	if (missingIngredients !== undefined) {
 		missingIngredientsDisplay = [...missingIngredients.values()].map(
 			(ingredient, index) => {
 				return (

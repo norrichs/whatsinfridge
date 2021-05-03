@@ -12,7 +12,7 @@ function App() {
 	const [resultRecipes, setResultRecipes] = useState(null);
 	const [savedRecipes, setSavedRecipes] = useState([]);
 	const [missingIngredients, setMissingIngredients] = useState([]);
-	const [shoppingList, setShoppingList] = useState([]);
+	// const [shoppingList, setShoppingList] = useState([]);
 	const [resultLimit, setResultLimit] = useState(5);
 	// Search form results handler
 	//
