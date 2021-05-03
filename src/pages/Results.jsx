@@ -3,8 +3,8 @@ import RecipeCondensed from "../components/RecipeCondensed";
 import IngredientMissing from "../components/IngredientMissing";
 import Header from "../components/Header";
 
-const Results = ({resultRecipes}) => {
-	console.log('results props', resultRecipes)
+const Results = ({ resultRecipes, handleSaveClick, handleNopeClick}) => {
+	console.log("results props", resultRecipes);
 	const resultRecipesPlaceholder = [
 		{
 			title: "rec 1",
@@ -25,9 +25,17 @@ const Results = ({resultRecipes}) => {
 	];
 
 	// alert(resultRecipes)
-	console.log( resultRecipes)
+	console.log(resultRecipes);
 	const recipeDisplayArray = resultRecipes.map((recipe, index) => {
-		return <RecipeCondensed index={index} recipe={recipe} key={index} />;
+		return (
+			<RecipeCondensed
+				handleNopeClick={handleNopeClick}
+				handleSaveClick={handleSaveClick}
+				index={index}
+				recipe={recipe}
+				key={index}
+			/>
+		);
 	});
 	const dummyMissing = [
 		"pickles",

@@ -7,24 +7,40 @@ import Recipes from "./pages/Recipes";
 import About from "./pages/About";
 import { useState } from "react";
 
-
 function App() {
-	const [resultRecipes, setResultRecipes] = useState(null)
+	const [resultRecipes, setResultRecipes] = useState(null);
+	const [savedRecipes, setSavedRecipes] = useState([]);
 
 	// Search form results handler
-	// 		
+	//
 	const handleSearch = (searchTerm) => {
 		console.log("App handleSearch", searchTerm);
-		getResult(searchTerm)
+		getResult(searchTerm);
+	};
+	const handleSaveClick = (recipe) => {
+		// TODO construct query and an call API to retrieve full recipe info and store in array
+		console.log("handle save click", recipe.id, recipe.title);
+		setSavedRecipes([...savedRecipes, recipe]);
+	};
+	const handleNopeClick = (recipe) => {
+		console.log("handle nope click", recipe.id, recipe.title);
+		// TODO remove matching recipe from resultRecipes array by iterating through, looking for matching ID
+		//  setResultRecipes( resultRecipes.splice( resultRecipes.map((recipe, index) => {recipe.id}).indexOf(recipeID), 1 )
 	};
 	// Process form string to API compliant search string
-	const processSearchTerm = (searchTerm) => searchTerm.split(",").map((string) => string.trim()).join("%2C")
+	const processSearchTerm = (searchTerm) =>
+		searchTerm
+			.split(",")
+			.map((string) => string.trim())
+			.join("%2C");
 	// Call spoonacular API and push results to state
 	const getResult = async (searchTerm) => {
-		const returnCount = 20
-		
+		const returnCount = 20;
+
 		const response = await fetch(
-			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${processSearchTerm(searchTerm)}&number=${returnCount}&ignorePantry=true&ranking=1`,
+			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${processSearchTerm(
+				searchTerm
+			)}&number=${returnCount}&ignorePantry=true&ranking=1`,
 			{
 				method: "GET",
 				headers: {
@@ -35,19 +51,25 @@ function App() {
 				},
 			}
 		);
-		console.log("App got response")
+		console.log("App got response");
 		const data = await response.json();
-		console.log('got api data',data);
-		setResultRecipes(data)
-		console.log('results set')
+		console.log("got api data", data);
+		setResultRecipes(data);
+		console.log("results set");
 	};
 
 	const loading = () => {
-		return <div>Loading...</div>
-	}
+		return <div>Loading...</div>;
+	};
 	const loaded = () => {
-		return <Results resultRecipes= {resultRecipes} />
-	}
+		return (
+			<Results
+				handleSaveClick={handleSaveClick}
+				handleNopeClick={handleNopeClick}
+				resultRecipes={resultRecipes}
+			/>
+		);
+	};
 
 	return (
 		<div className="App">
@@ -59,7 +81,7 @@ function App() {
 					{resultRecipes ? loaded() : loading()}
 				</Route>
 				<Route path="/Recipes">
-					<Recipes />
+					<Recipes savedRecipes={savedRecipes} />
 				</Route>
 				<Route path="/About">
 					<About />

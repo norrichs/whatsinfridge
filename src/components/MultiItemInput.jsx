@@ -1,12 +1,20 @@
-import React from "react";
+import React ,{useState} from "react";
 import {useHistory} from 'react-router-dom'
 // import {Redirect} from 'react-router-dom'
 
 const MultiItemInput = (props) => {
+	const [searchString, setSearchString] = useState(null)
 	const history = useHistory()
+	
+	const handleChange = (event) => {
+		console.log(event.target.value)
+		setSearchString(event.target.value)
+	}
+
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		props.handleSearch("mozzarella, tomato, plantain");
+		console.log(event.target.value)
+		props.handleSearch(searchString);
 		// REDIRECT to results page on form submit
 		history.push("/Results")
 	};
@@ -14,7 +22,7 @@ const MultiItemInput = (props) => {
 	return (
 		<>
 			<form onSubmit={handleSubmit}>
-				<input type="text" placeholder="tell me about your fridge" />
+				<input onChange={handleChange} type="text" placeholder="tell me about your fridge" />
 				<input
 					type="submit"
 					value="what can I make with all of this?"

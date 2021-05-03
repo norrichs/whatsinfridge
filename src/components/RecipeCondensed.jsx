@@ -1,6 +1,6 @@
 import React from "react";
 
-const RecipeCondensed = ({index, recipe }) => {
+const RecipeCondensed = ({index, recipe, handleSaveClick, handleNopeClick }) => {
 	// console.log("RecipeCondensed props", recipe);
 	return (
 		<div className="recipe-condensed">
@@ -9,8 +9,8 @@ const RecipeCondensed = ({index, recipe }) => {
 				<div>{recipe.image}</div>
 			</div>
 			<div>
-				<button>nope</button>
-				<button>save</button>
+				<button onClick={()=>{handleNopeClick(recipe)}}>nope</button>
+				<button onClick={()=>{handleSaveClick(recipe)}}>save</button>
 			</div>
 		</div>
 	);
