@@ -18,7 +18,9 @@ const RecipeCondensed = ({
 				<span>{index}</span>
 				{recipe.title}
 			</div>
-			<div className="rc-text">{recipe.image}</div>
+			<div className="rc-text">
+				{recipe.image}
+			</div>
 			<button
 				className="rc-button-nope"
 				onClick={() => {

@@ -8,7 +8,7 @@ const MultiItemInput = (props) => {
 	const history = useHistory()
 	
 	const handleChange = (event) => {
-		console.log(event.target.value)
+		// console.log(event.target.value)
 		setSearchString(event.target.value)
 	}
 

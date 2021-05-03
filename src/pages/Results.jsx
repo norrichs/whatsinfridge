@@ -3,10 +3,17 @@ import RecipeCondensed from "../components/RecipeCondensed";
 import IngredientMissing from "../components/IngredientMissing";
 import Header from "../components/Header";
 
-const Results = ({ resultRecipes, handleSaveClick, handleNopeClick}) => {
-	console.log("results props", resultRecipes);
+const Results = ({
+	resultRecipes,
+	missingIngredients,
+	handleSaveClick,
+	handleNopeClick,
+	handleAddSearchTerm,
+	handleRefreshRecipes
+}) => {
+	console.log("results recipes", resultRecipes);
 	// alert(resultRecipes)
-	console.log(resultRecipes);
+	// console.log(resultRecipes);
 	const recipeDisplayArray = resultRecipes.map((recipe, index) => {
 		return (
 			<RecipeCondensed
@@ -18,19 +25,30 @@ const Results = ({ resultRecipes, handleSaveClick, handleNopeClick}) => {
 			/>
 		);
 	});
-	const dummyMissing = [
-		"pickles",
-		"ham",
-		"string beans",
-		"salmon roe",
-		"heavy cream",
-		"turnips",
-		"beef broth",
-		"flavored water",
-	];
-	const missingIngredient = dummyMissing.map((ingredient, index) => {
-		return <IngredientMissing ingredient={ingredient} key={index} />;
-	});
+
+	const handleRefresh = () => {
+		handleRefreshRecipes()
+	}
+
+
+
+
+	let missingIngredientsDisplay = null;
+	// console.log("missing ingredients (results)", missingIngredients);
+	if (missingIngredients != undefined) {
+		missingIngredientsDisplay = [...missingIngredients.values()].map(
+			(ingredient, index) => {
+				return (
+					<IngredientMissing
+						handleAddSearchTerm={handleAddSearchTerm}
+						ingredient={ingredient}
+						key={index}
+					/>
+				);
+			}
+		);
+		// console.log(missingIngredientsDisplay);
+	}
 
 	return (
 		<div className="results-page">
@@ -39,10 +57,14 @@ const Results = ({ resultRecipes, handleSaveClick, handleNopeClick}) => {
 			<section className="recipe-area">{recipeDisplayArray}</section>
 			<div className="missing-ingredients-header">
 				<div>...do you have?</div>
-				<button>refresh recipes</button>
+				<button onClick={handleRefresh}>refresh recipes</button>
 			</div>
 
-			<section className="ingredients-area">{missingIngredient}</section>
+			<section className="ingredients-area">
+				{missingIngredientsDisplay
+					? missingIngredientsDisplay
+					: "loading"}
+			</section>
 		</div>
 	);
 };

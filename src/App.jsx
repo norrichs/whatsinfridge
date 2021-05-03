@@ -8,6 +8,7 @@ import About from "./pages/About";
 import { useState, useEffect } from "react";
 
 function App() {
+	const [searchTermsArray, setSearchTermsArray] = useState([])
 	const [resultRecipes, setResultRecipes] = useState(null);
 	const [savedRecipes, setSavedRecipes] = useState([]);
 	const [missingIngredients, setMissingIngredients] = useState([]);
@@ -17,7 +18,11 @@ function App() {
 	//
 	const handleSearch = (searchTerm) => {
 		console.log("App handleSearch", searchTerm);
-		getResult(searchTerm);
+		//TODO move searchTerm processing to search page
+		const cleanSearchTerm = processSearchTerm(searchTerm)
+		getResult(cleanSearchTerm)
+		setSearchTermsArray(cleanSearchTerm.split("%2C"))
+		console.log('searchTermsArray',searchTermsArray)
 	};
 	const handleSaveClick = (recipe) => {
 		// TODO construct query and an call API to retrieve full recipe info and store in array
@@ -30,20 +35,34 @@ function App() {
 		//  setResultRecipes( resultRecipes.splice( resultRecipes.map((recipe, index) => {recipe.id}).indexOf(recipeID), 1 )
 	};
 
+	const handleAddSearchTerm = (term) => {
+		console.log('add search term', term)
+		const newSearchTerm = [...searchTermsArray, term]
+		console.log('newSearch', newSearchTerm)
+		setSearchTermsArray(newSearchTerm)
+
+	}
+
 	// Process form string to API compliant search string
 	const processSearchTerm = (searchTerm) =>
 		searchTerm
 			.split(",")
 			.map((string) => string.trim())
 			.join("%2C");
+
+
+
+
 	// Call spoonacular API and push results to state
 	const getResult = async (searchTerm) => {
+		console.log('searchterm',searchTerm)
+		if(searchTerm === undefined){
+			searchTerm = searchTermsArray.join("%2C")
+		}
 		const returnCount = resultLimit;
 
 		const response = await fetch(
-			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${processSearchTerm(
-				searchTerm
-			)}&number=${returnCount}&ignorePantry=true&ranking=1`,
+			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${searchTerm}&number=${returnCount}&ignorePantry=true&ranking=1`,
 			{
 				method: "GET",
 				headers: {
@@ -54,7 +73,7 @@ function App() {
 				},
 			}
 		);
-		console.log("App got response");
+		console.log("App got response", response);
 		const data = await response.json();
 		console.log("got api data", data);
 		setResultRecipes(data);
@@ -62,21 +81,17 @@ function App() {
 	};
 	// When the resultRecipes list changes, re-initialize the unique Set of missing ingredients
 	useEffect(() => {
-		console.log("init useEffect");
+		// console.log("init useEffect");
 		if (resultRecipes) {
 			// const currentMissingIngredients = new Set();
 			// resultRecipes
-			console.log("useEffect", resultRecipes);
-			console.log(
-				"first set of missed",
-				resultRecipes[1].missedIngredients[0].name,
-				resultRecipes[1].missedIngredients[0].id
-			);
+			console.log("useEffect result recipes", resultRecipes);
+
 			const missingSet = new Set();
 
 			resultRecipes.forEach((recipe) => {
 				if (recipe.missedIngredientCount > 0) {
-					console.log(recipe);
+					// console.log(recipe);
 					recipe.missedIngredients.forEach((mi) => {
 						missingSet.add({
 							id: mi.id,
@@ -100,6 +115,8 @@ function App() {
 	const loadedResults = () => {
 		return (
 			<Results
+				handleRefreshRecipes={getResult}
+				handleAddSearchTerm={handleAddSearchTerm}
 				handleSaveClick={handleSaveClick}
 				handleNopeClick={handleNopeClick}
 				resultRecipes={resultRecipes}
