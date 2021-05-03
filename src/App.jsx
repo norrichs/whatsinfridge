@@ -10,6 +10,8 @@ import { useState } from "react";
 function App() {
 	const [resultRecipes, setResultRecipes] = useState(null);
 	const [savedRecipes, setSavedRecipes] = useState([]);
+	const [missingIngredients, setmissingIngredients] = useState([])
+	const [shoppingList, setShoppingList] = useState([])
 
 	// Search form results handler
 	//
@@ -75,7 +77,9 @@ function App() {
 		<div className="App">
 			<Switch>
 				<Route exact path="/">
-					<Search handleSearch={handleSearch} />
+					<Search
+						handleSearch={handleSearch}
+					/>
 				</Route>
 				<Route path="/Results">
 					{resultRecipes ? loaded() : loading()}

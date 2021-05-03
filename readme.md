@@ -225,3 +225,4 @@ PrivateRoute might do the trick
 
 I want to have a fixed static header for the Results, Recipes, and About pages.  The Search page should not have a header
 Need to make sure that the header doesn't re-render when proceeding through the pages
+- Not a problem
