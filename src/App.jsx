@@ -5,14 +5,14 @@ import Search from "./pages/Search";
 import Results from "./pages/Results";
 import Recipes from "./pages/Recipes";
 import About from "./pages/About";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
 	const [resultRecipes, setResultRecipes] = useState(null);
 	const [savedRecipes, setSavedRecipes] = useState([]);
-	const [missingIngredients, setmissingIngredients] = useState([])
-	const [shoppingList, setShoppingList] = useState([])
-
+	const [missingIngredients, setMissingIngredients] = useState([]);
+	const [shoppingList, setShoppingList] = useState([]);
+	const [resultLimit, setResultLimit] = useState(5);
 	// Search form results handler
 	//
 	const handleSearch = (searchTerm) => {
@@ -29,6 +29,7 @@ function App() {
 		// TODO remove matching recipe from resultRecipes array by iterating through, looking for matching ID
 		//  setResultRecipes( resultRecipes.splice( resultRecipes.map((recipe, index) => {recipe.id}).indexOf(recipeID), 1 )
 	};
+
 	// Process form string to API compliant search string
 	const processSearchTerm = (searchTerm) =>
 		searchTerm
@@ -37,7 +38,7 @@ function App() {
 			.join("%2C");
 	// Call spoonacular API and push results to state
 	const getResult = async (searchTerm) => {
-		const returnCount = 20;
+		const returnCount = resultLimit;
 
 		const response = await fetch(
 			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${processSearchTerm(
@@ -57,18 +58,52 @@ function App() {
 		const data = await response.json();
 		console.log("got api data", data);
 		setResultRecipes(data);
-		console.log("results set");
+		console.log("results set", resultRecipes);
 	};
+	// When the resultRecipes list changes, re-initialize the unique Set of missing ingredients
+	useEffect(() => {
+		console.log("init useEffect");
+		if (resultRecipes) {
+			// const currentMissingIngredients = new Set();
+			// resultRecipes
+			console.log("useEffect", resultRecipes);
+			console.log(
+				"first set of missed",
+				resultRecipes[1].missedIngredients[0].name,
+				resultRecipes[1].missedIngredients[0].id
+			);
+			const missingSet = new Set();
+
+			resultRecipes.forEach((recipe) => {
+				if (recipe.missedIngredientCount > 0) {
+					console.log(recipe);
+					recipe.missedIngredients.forEach((mi) => {
+						missingSet.add({
+							id: mi.id,
+							name: mi.name,
+							image: mi.image,
+							originalString: mi.originalString
+						});
+					});
+				}
+			});
+			setMissingIngredients(missingSet)
+			console.log('state - missingIngredients',missingIngredients)
+		} else {
+			console.log("useEffect no data");
+		}
+	}, [resultRecipes]);
 
 	const loading = () => {
 		return <div>Loading...</div>;
 	};
-	const loaded = () => {
+	const loadedResults = () => {
 		return (
 			<Results
 				handleSaveClick={handleSaveClick}
 				handleNopeClick={handleNopeClick}
 				resultRecipes={resultRecipes}
+				missingIngredients={missingIngredients}
 			/>
 		);
 	};
@@ -77,12 +112,10 @@ function App() {
 		<div className="App">
 			<Switch>
 				<Route exact path="/">
-					<Search
-						handleSearch={handleSearch}
-					/>
+					<Search handleSearch={handleSearch} />
 				</Route>
 				<Route path="/Results">
-					{resultRecipes ? loaded() : loading()}
+					{resultRecipes ? loadedResults() : loading()}
 				</Route>
 				<Route path="/Recipes">
 					<Recipes savedRecipes={savedRecipes} />
