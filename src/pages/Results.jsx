@@ -5,25 +5,6 @@ import Header from "../components/Header";
 
 const Results = ({ resultRecipes, handleSaveClick, handleNopeClick}) => {
 	console.log("results props", resultRecipes);
-	const resultRecipesPlaceholder = [
-		{
-			title: "rec 1",
-			image: "beans, beans, beans",
-		},
-		{
-			title: "rec 2",
-			image: "carrots and pork",
-		},
-		{
-			title: "rec 3",
-			image: "rice and muck",
-		},
-		{
-			title: "rec 4",
-			image: "cheese bits",
-		},
-	];
-
 	// alert(resultRecipes)
 	console.log(resultRecipes);
 	const recipeDisplayArray = resultRecipes.map((recipe, index) => {
