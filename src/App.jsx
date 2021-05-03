@@ -8,7 +8,7 @@ import About from "./pages/About";
 import { useState, useEffect } from "react";
 
 function App() {
-	const [searchTermsArray, setSearchTermsArray] = useState([])
+	const [searchTermsArray, setSearchTermsArray] = useState([]);
 	const [resultRecipes, setResultRecipes] = useState(null);
 	const [savedRecipes, setSavedRecipes] = useState([]);
 	const [missingIngredients, setMissingIngredients] = useState([]);
@@ -19,10 +19,10 @@ function App() {
 	const handleSearch = (searchTerm) => {
 		console.log("App handleSearch", searchTerm);
 		//TODO move searchTerm processing to search page
-		const cleanSearchTerm = processSearchTerm(searchTerm)
-		getResult(cleanSearchTerm)
-		setSearchTermsArray(cleanSearchTerm.split("%2C"))
-		console.log('searchTermsArray',searchTermsArray)
+		const cleanSearchTerm = processSearchTerm(searchTerm);
+		getResult(cleanSearchTerm);
+		setSearchTermsArray(cleanSearchTerm.split("%2C"));
+		console.log("searchTermsArray", searchTermsArray);
 	};
 	const handleSaveClick = (recipe) => {
 		// TODO construct query and an call API to retrieve full recipe info and store in array
@@ -36,28 +36,27 @@ function App() {
 	};
 
 	const handleAddSearchTerm = (term) => {
-		console.log('add search term', term)
-		const newSearchTerm = [...searchTermsArray, term]
-		console.log('newSearch', newSearchTerm)
-		setSearchTermsArray(newSearchTerm)
-
-	}
+		console.log("add search term", term);
+		const newSearchTerm = [...searchTermsArray, term];
+		console.log("newSearch", newSearchTerm);
+		setSearchTermsArray(newSearchTerm);
+	};
 
 	// Process form string to API compliant search string
-	const processSearchTerm = (searchTerm) =>
-		searchTerm
-			.split(",")
-			.map((string) => string.trim())
-			.join("%2C");
-
-
-
+	const processSearchTerm = (searchTerm) =>  searchTerm.replace(/,\n/g, "%2C").replace(/\n/g, "%2C")
+		// searchTerm 
+		// 	.split("\n")
+		// 	.map((string) => string.trim())
+		// 	.join("%2C")
+		// 	.split(",")
+		// 	.map((string) => string.trim())
+		// 	.join("%2C");
 
 	// Call spoonacular API and push results to state
 	const getResult = async (searchTerm) => {
-		console.log('searchterm',searchTerm)
-		if(searchTerm === undefined){
-			searchTerm = searchTermsArray.join("%2C")
+		console.log("searchterm", searchTerm);
+		if (searchTerm === undefined) {
+			searchTerm = searchTermsArray.join("%2C");
 		}
 		const returnCount = resultLimit;
 
@@ -97,13 +96,13 @@ function App() {
 							id: mi.id,
 							name: mi.name,
 							image: mi.image,
-							originalString: mi.originalString
+							originalString: mi.originalString,
 						});
 					});
 				}
 			});
-			setMissingIngredients(missingSet)
-			console.log('state - missingIngredients',missingIngredients)
+			setMissingIngredients(missingSet);
+			console.log("state - missingIngredients", missingIngredients);
 		} else {
 			console.log("useEffect no data");
 		}

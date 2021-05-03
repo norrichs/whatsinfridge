@@ -43,20 +43,26 @@ form.multi-item-input {
 	box-shadow:  20px 20px 60px #1f5310,
 				 -20px -20px 60px #48c526;
 
-	input:first-of-type {
+	textarea {
 		background-color: rgba(0, 0, 0, 0.2);
 		height: 200px;
 		width: 60vw;
 		color: lightgray;
 		display: flex;
 		flex-direction: column;
-		text-justify: start;
+		text-justify: center;
 		text-align: center;
-		
+		margin: 0 auto;
+
+		border-width: 0;
+		border-color: unset;
+		border-image: unset;
+		border-style: unset;
 		font-size: 1.25em;
 		border-radius: 5px 5px 0 0;
 	}
-	input::placeholder {
+	textarea::placeholder {
+		text-align: center;
 		color: orange;
 	}
 	input {
