@@ -7,8 +7,8 @@ const MultiItemInput = (props) => {
 	const history = useHistory();
 
 	const handleChange = (event) => {
-		console.log(event.target);
-		console.log(event.target.value);
+		// console.log(event.target);
+		// console.log(event.target.value);
 		if (event.target.value[event.target.value.length - 1] === ",") {
 			console.log("comma detected",`${event.target.value}COMMA\r\n`);
 			setSearchString(`${event.target.value}\n`);
@@ -18,7 +18,8 @@ const MultiItemInput = (props) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		console.log(event.target.value);
+		console.log("submit search event",event)
+		console.log("submit search",event.target.value);
 		props.handleSearch(searchString);
 		// REDIRECT to results page on form submit
 		history.push("/Results");

@@ -46,4 +46,13 @@ Summarize Recipe
 	https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/{recipe-id}/summary
 
 Get Recipe Information
+
+
+
+
+### Recipe list handling
+
+1) after a search by ingredients is performed, run the bulk recipe information, store recipes in a state array
+2) when the recipe result list changes, check if those recipes are already cached.  run on all uncached ids, add to cache
+3) 
 	

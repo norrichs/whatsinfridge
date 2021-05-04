@@ -226,3 +226,32 @@ PrivateRoute might do the trick
 I want to have a fixed static header for the Results, Recipes, and About pages.  The Search page should not have a header
 Need to make sure that the header doesn't re-render when proceeding through the pages
 - Not a problem
+
+
+called a function that calls the api and returns data
+I want to do something immediately with that data
+
+needed to do the following:
+```js
+const getResult = async () => {
+	...
+	return result
+}
+
+const cacheData = async () => {
+	...
+	const result = getResult()
+	setCache(result)
+}
+```
+which didin't work.  so...
+```js
+const getResult = async () => {
+	...
+	return result
+}
+
+const cacheData = async () => {
+	...
+	getResult().then(result => setCache(result))
+}

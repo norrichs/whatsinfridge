@@ -1,15 +1,23 @@
 import React from "react";
 
-const IngredientMissing = ({ ingredient, handleAddSearchTerm }) => {
+const IngredientMissing = ({
+	ingredient,
+	handleAddSearchTerm,
+	handleRemoveMissingIngredient,
+	handleAddToShoppingList
+}) => {
 	// console.log("Ingredient missing props", ingredient);
 
 	//
-	const handleHave = (name) => {
-		console.log("handleHave", name);
-		handleAddSearchTerm(name)
+	const handleHave = (ingredient) => {
+		console.log("handleHave", ingredient);
+		handleAddSearchTerm(ingredient.name);
+		handleRemoveMissingIngredient(ingredient.id);
+		// TODO - implement remove this ingredinet from list
 	};
-	const handleGet = (id) => {
-		console.log("handleGet", id);
+	const handleGet = (ingredient) => {
+		console.log("handleGet", ingredient);
+		handleAddToShoppingList(ingredient)
 	};
 	const handleExclude = (id) => {
 		console.log("handleExclude", id);
@@ -20,8 +28,10 @@ const IngredientMissing = ({ ingredient, handleAddSearchTerm }) => {
 			<div>{ingredient.name}</div>
 			<div>
 				{/* TODO fontawesome icons to use maybe: ban, trash, cart-plus, thumbs-up, check-circle, */}
-				<button onClick={() => handleHave(ingredient.name)}>have</button>
-				<button onClick={() => handleGet(ingredient.id)}>get</button>
+				<button onClick={() => handleHave(ingredient)}>
+					have
+				</button>
+				<button onClick={() => handleGet(ingredient)}>get</button>
 				<button onClick={() => handleExclude(ingredient.id)}>
 					ban
 				</button>

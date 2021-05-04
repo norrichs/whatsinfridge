@@ -9,9 +9,11 @@ const Results = ({
 	handleSaveClick,
 	handleNopeClick,
 	handleAddSearchTerm,
-	handleRefreshRecipes
+	handleRefreshRecipes,
+	handleRemoveMissingIngredient,
+	handleAddToShoppingList
 }) => {
-	console.log("results recipes", resultRecipes);
+	console.log("Results recipes", resultRecipes);
 	// alert(resultRecipes)
 	// console.log(resultRecipes);
 	const recipeDisplayArray = resultRecipes.map((recipe, index) => {
@@ -27,11 +29,8 @@ const Results = ({
 	});
 
 	const handleRefresh = () => {
-		handleRefreshRecipes()
-	}
-
-
-
+		handleRefreshRecipes();
+	};
 
 	let missingIngredientsDisplay = null;
 	// console.log("missing ingredients (results)", missingIngredients);
@@ -40,6 +39,10 @@ const Results = ({
 			(ingredient, index) => {
 				return (
 					<IngredientMissing
+						handleAddToShoppingList={handleAddToShoppingList}
+						handleRemoveMissingIngredient={
+							handleRemoveMissingIngredient
+						}
 						handleAddSearchTerm={handleAddSearchTerm}
 						ingredient={ingredient}
 						key={index}
