@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faThumbsUp, faTimesCircle, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const IngredientMissing = ({
 	ingredient,
@@ -29,11 +31,11 @@ const IngredientMissing = ({
 			<div>
 				{/* TODO fontawesome icons to use maybe: ban, trash, cart-plus, thumbs-up, check-circle, */}
 				<button onClick={() => handleHave(ingredient)}>
-					have
+					<FontAwesomeIcon icon={faThumbsUp} />
 				</button>
-				<button onClick={() => handleGet(ingredient)}>get</button>
+				<button onClick={() => handleGet(ingredient)}><FontAwesomeIcon icon={faShoppingCart} /></button>
 				<button onClick={() => handleExclude(ingredient.id)}>
-					ban
+				<FontAwesomeIcon icon={faTimesCircle} />
 				</button>
 			</div>
 		</div>

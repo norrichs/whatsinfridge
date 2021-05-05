@@ -2,6 +2,8 @@ import React from "react";
 import RecipeCondensed from "../components/RecipeCondensed";
 import IngredientMissing from "../components/IngredientMissing";
 import Header from "../components/Header";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Results = ({
 	resultRecipes,
@@ -11,7 +13,7 @@ const Results = ({
 	handleAddSearchTerm,
 	handleRefreshRecipes,
 	handleRemoveMissingIngredient,
-	handleAddToShoppingList
+	handleAddToShoppingList,
 }) => {
 	console.log("Results recipes", resultRecipes);
 	// alert(resultRecipes)
@@ -60,7 +62,9 @@ const Results = ({
 			<section className="recipe-area">{recipeDisplayArray}</section>
 			<div className="missing-ingredients-header">
 				<div>...do you have?</div>
-				<button onClick={handleRefresh}>refresh recipes</button>
+				<button onClick={handleRefresh}>
+					<FontAwesomeIcon icon={faRedoAlt} />
+				</button>
 			</div>
 
 			<section className="ingredients-area">

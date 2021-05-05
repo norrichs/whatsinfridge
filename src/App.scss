@@ -195,3 +195,26 @@ section.ingredients-area {
 		text-decoration: line-through;
 	}
 }
+.recipe-banner {
+	min-height: 250px;
+	color: magenta;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	div {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: flex-end;
+		padding: 10px;
+		background-color: rgba(0, 0, 0, 0.4);
+
+		span {
+			font-size: 2em;
+		}
+		a {
+			font-size: 2em;
+		}
+	}
+}

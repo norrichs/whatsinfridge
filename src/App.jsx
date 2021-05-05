@@ -6,6 +6,7 @@ import Results from "./pages/Results";
 import Recipes from "./pages/Recipes";
 import ShoppingList from "./pages/ShoppingList";
 import About from "./pages/About";
+import RecipeFull from "./pages/RecipeFull";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
 	const [shoppingList, setShoppingList] = useState([]);
 	// const [resultLimit, setResultLimit] = useState(5);
 	const apiKey = "6d8cba578amshebba4e821ebc3abp1fecbajsndb5067a609b4";
-	const resultLimit = 5;
+	const resultLimit = 3;
 	// Search form results handler
 	//
 	const handleSearch = (searchTerm) => {
@@ -26,10 +27,14 @@ function App() {
 		const cleanSearchTerm = processSearchTerm(searchTerm);
 		// const searchResults = getResult(cleanSearchTerm);
 		// console.log('handleSearch - searchResults', searchResults)
-		getResult(cleanSearchTerm).then(searchResults => {
-			console.log("handleSearch, search results to pass to cacheRecipeInfo",searchResults)
-			cacheRecipeInfo(searchResults.map((recipe) => recipe.id))})
-		
+		getResult(cleanSearchTerm).then((searchResults) => {
+			console.log(
+				"handleSearch, search results to pass to cacheRecipeInfo",
+				searchResults
+			);
+			cacheRecipeInfo(searchResults.map((recipe) => recipe.id));
+		});
+
 		setSearchTermsArray(cleanSearchTerm.split("%2C"));
 		console.log("searchTermsArray", searchTermsArray);
 	};
@@ -105,26 +110,26 @@ function App() {
 		console.log("got api data", data);
 		setResultRecipes(data);
 		console.log("results set", resultRecipes);
-		return data
-	};
-	const getRecipe = async (id = 567587) => {
-		//492601, 492601, 567587
-		console.log("getRecipe", id);
-		const response = await fetch(
-			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
-			{
-				method: "GET",
-				headers: {
-					"x-rapidapi-key": apiKey,
-					"x-rapidapi-host":
-						"spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-				},
-			}
-		);
-		const data = await response.json();
-		console.log("recipe result", data);
 		return data;
 	};
+	// const getRecipe = async (id = 567587) => {
+	// 	//492601, 492601, 567587
+	// 	console.log("getRecipe", id);
+	// 	const response = await fetch(
+	// 		`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${id}/information`,
+	// 		{
+	// 			method: "GET",
+	// 			headers: {
+	// 				"x-rapidapi-key": apiKey,
+	// 				"x-rapidapi-host":
+	// 					"spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+	// 			},
+	// 		}
+	// 	);
+	// 	const data = await response.json();
+	// 	console.log("recipe result", data);
+	// 	return data;
+	// };
 	const getRecipeBulk = async (idArray) => {
 		console.log("bulk id list", idArray);
 		const idString = idArray.join("%2C");
@@ -153,11 +158,14 @@ function App() {
 			idArray.filter((id) => currentSavedIDs.includes(id));
 		}
 		// Get recipe info by calling API
-		const recipes = await getRecipeBulk(idArray)
+		const recipes = await getRecipeBulk(idArray);
 		// Store recipe info in state array cache
-		console.log("cacheRecipeInfo - ready to setSavedRecipeInfo",recipes)
-		setSavedRecipeInfo([...savedRecipeInfo, ...recipes])
-		console.log("cacheRecipeInfo - saved recipes to State", savedRecipeInfo)
+		console.log("cacheRecipeInfo - ready to setSavedRecipeInfo", recipes);
+		setSavedRecipeInfo([...savedRecipeInfo, ...recipes]);
+		console.log(
+			"cacheRecipeInfo - saved recipes to State",
+			savedRecipeInfo
+		);
 	};
 
 	// When the resultRecipes list changes, re-initialize the unique Set of missing ingredients
@@ -183,7 +191,7 @@ function App() {
 					});
 				}
 			});
-			console.log("pre-state missingSet", missingSet)
+			console.log("pre-state missingSet", missingSet);
 			setMissingIngredients(missingSet);
 			console.log("state - missingIngredients", missingIngredients);
 		} else {
@@ -208,6 +216,12 @@ function App() {
 			/>
 		);
 	};
+	const getSavedRecipeInfoByID = (id) => {
+		// console.log("getSavedRecipeInfoByID - saved recipes:", savedRecipeInfo,"this ID:", id)
+		const result = savedRecipeInfo.filter((recipe) => recipe.id === parseInt(id));
+		// console.log('gSRIBID result', result)
+		return result[0]
+	};
 
 	return (
 		<div className="App">
@@ -229,6 +243,21 @@ function App() {
 						}
 					/>
 				</Route>
+				<Route
+					path="/Recipe/:id"
+					render={(routerProps) => (
+						<RecipeFull
+							recipe={getSavedRecipeInfoByID(
+								routerProps.match.params.id
+							)}
+							{...routerProps}
+						/>
+					)}
+				/>
+
+				{/* <Route exact path="/Recipe">
+					<RecipeFull recipe={recipe}/>
+				</Route> */}
 				<Route path="/About">
 					<About />
 				</Route>
