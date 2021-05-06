@@ -1,12 +1,13 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faThumbsUp, faTimesCircle, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {faThumbsUp, faTimesCircle, faShoppingCart, faBan } from "@fortawesome/free-solid-svg-icons";
 
 const IngredientMissing = ({
 	ingredient,
 	handleAddSearchTerm,
 	handleRemoveMissingIngredient,
-	handleAddToShoppingList
+	handleAddToShoppingList,
+	handleAddToExcludeList
 }) => {
 	// console.log("Ingredient missing props", ingredient);
 
@@ -18,11 +19,11 @@ const IngredientMissing = ({
 		// TODO - implement remove this ingredinet from list
 	};
 	const handleGet = (ingredient) => {
-		console.log("handleGet", ingredient);
 		handleAddToShoppingList(ingredient)
 	};
-	const handleExclude = (id) => {
-		console.log("handleExclude", id);
+	const handleExclude = (ingredient) => {
+
+		handleAddToExcludeList(ingredient)
 	};
 
 	return (
@@ -31,11 +32,11 @@ const IngredientMissing = ({
 			<div>
 				{/* TODO fontawesome icons to use maybe: ban, trash, cart-plus, thumbs-up, check-circle, */}
 				<button onClick={() => handleHave(ingredient)}>
-					<FontAwesomeIcon icon={faThumbsUp} />
+					<FontAwesomeIcon style={{color: "green"}} icon={faThumbsUp} />
 				</button>
-				<button onClick={() => handleGet(ingredient)}><FontAwesomeIcon icon={faShoppingCart} /></button>
-				<button onClick={() => handleExclude(ingredient.id)}>
-				<FontAwesomeIcon icon={faTimesCircle} />
+				<button onClick={() => handleGet(ingredient)}><FontAwesomeIcon style={{color: "cornflowerblue"}} icon={faShoppingCart} /></button>
+				<button onClick={() => handleExclude(ingredient)}>
+				<FontAwesomeIcon style={{color: "red"}} icon={faBan} />
 				</button>
 			</div>
 		</div>

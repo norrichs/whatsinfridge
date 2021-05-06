@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
 	faTimesCircle,
@@ -15,20 +15,22 @@ const RecipeCondensed = ({
 	// handleRecipeDisplay,
 }) => {
 	// console.log("RecipeCondensed props", recipe);
+	const history = useHistory();
+	const handleRecipeClick = () => {
+		console.log("handleRecipeClick", recipe);
+		history.push(`/Recipe/${recipe.id}`)
+	};
 
-	// const handleRecipeClick = () => {
-	// 	console.log("handleRecipeClick", recipe);
-	// 	handleRecipeDisplay(recipe);
-	// };
 	return (
 		<div className="recipe-condensed">
 			{/* <img src={recipe.image}/> */}
-			<Link to={`/Recipe/${recipe.id}`}>
+			{/* <Link to={`/Recipe/${recipe.id}`}> */}
 				<div
+					onClick={handleRecipeClick}
 					className="rc-thumbnail"
 					style={{ backgroundImage: `url(${recipe.image})` }}
 				></div>
-			</Link>
+			{/* </Link> */}
 
 			<div className="rc-title">
 				<span>{index}</span>

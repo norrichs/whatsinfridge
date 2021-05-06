@@ -32,7 +32,7 @@ const MultiItemInput = (props) => {
 					style={{whiteSpace: "pre-line"}}
 					onChange={handleChange}
 					type="textarea"
-					placeholder="tell me about your fridge"
+					placeholder="type some ingredients you have on hand"
 					value={searchString}
 				/>
 				<input
