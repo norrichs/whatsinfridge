@@ -7,7 +7,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const RecipeCondensed = ({
-	index,
 	recipe,
 	handleSaveClick,
 	handleNopeClick
@@ -33,26 +32,25 @@ const RecipeCondensed = ({
 			{/* </Link> */}
 
 			<div className="rc-title">
-				<span>{index}</span>
 				{recipe.title}
 			</div>
 			<div className="rc-text">{recipe.image}</div>
-			<button
+			<div
 				className="rc-button-nope"
 				onClick={() => {
 					handleNopeClick(recipe);
 				}}
 			>
 				<FontAwesomeIcon icon={faTimesCircle} />
-			</button>
-			<button
+			</div>
+			<div
 				className="rc-button-save"
 				onClick={() => {
 					handleSaveClick(recipe);
 				}}
 			>
 				<FontAwesomeIcon icon={faFolderPlus} />
-			</button>
+			</div>
 		</div>
 	);
 };

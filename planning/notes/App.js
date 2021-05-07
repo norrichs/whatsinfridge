@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+
+
+App.jsx
+
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import "./App.scss";
@@ -11,33 +17,72 @@ import { useState, useEffect } from "react";
 
 function App() {
 	const [searchTermsArray, setSearchTermsArray] = useState([]);
-	const [resultRecipes, setResultRecipes] = useState(null);
+	const [resultRecipes, setResultRecipes] = useState([]);
 	const [savedRecipes, setSavedRecipes] = useState([]);
 	const [savedRecipeInfo, setSavedRecipeInfo] = useState([]);
 	const [missingIngredients, setMissingIngredients] = useState([]);
+	const [excludeList, setExcludeList] = useState([]);
 	const [shoppingList, setShoppingList] = useState([]);
 	// const [resultLimit, setResultLimit] = useState(5);
 	const apiKey = "6d8cba578amshebba4e821ebc3abp1fecbajsndb5067a609b4";
 	const resultLimit = 20;
+	const priority = {
+		minimizeMissed: 2,
+		maximizeUsed: 1,
+	};
 	// Search form results handler
 	//
-	const handleSearch = (searchTerm) => {
-		console.log("App handleSearch", searchTerm);
+	const handleSearch = (passedSearchTerm) => {
+		console.log("App handleSearch - passedSearchTerm", passedSearchTerm);
+		// Use stored search term
+		let searchTerm = "";
+		if (passedSearchTerm === undefined) {
+			searchTerm = searchTermsArray.join("%2C");
+		} else if (searchTermsArray.length > 0) {
+			searchTerm =
+				passedSearchTerm + "%2C" + searchTermsArray.join("%2C");
+		} else {
+			searchTerm = passedSearchTerm;
+		}
+
+		console.log("handleSearch - searchTerm to clean", searchTerm);
 		//TODO move searchTerm processing to search page
 		const cleanSearchTerm = processSearchTerm(searchTerm);
 		// const searchResults = getResult(cleanSearchTerm);
-		// console.log('handleSearch - searchResults', searchResults)
-		getResult(cleanSearchTerm).then((searchResults) => {
-			console.log(
-				"handleSearch, search results to pass to cacheRecipeInfo",
-				searchResults
-			);
-			cacheRecipeInfo(searchResults.map((recipe) => recipe.id));
-		});
+		console.log("handleSearch - cleanSearchTerm to Pass", cleanSearchTerm);
 
-		setSearchTermsArray(cleanSearchTerm.split("%2C"));
-		console.log("searchTermsArray", searchTermsArray);
+		// TODO
+			// Check for any parameters that require complex search
+			// Parameters to check: 
+			// 		excluded ingredients
+			// 		intolerances
+			// 		cuisine
+			// 		query ?
+			// 		type
+			// 		equipment
+		if (excludeList.length > 0) {
+			console.log("handleSearch - cmplx - exlusions:", excludeList);
+			getResultComplex(cleanSearchTerm).then((searchResults) => {
+				console.log("handleSearch results to pass to cacheRecipeInfo", searchResults)
+				cacheRecipeInfo(searchResults.map((recipe) => recipe.id))
+			})
+			setSearchTermsArray(cleanSearchTerm.split("%2C"))
+			console.log("handleSearch after cached", searchTermsArray)
+
+		} else {
+			getResult(cleanSearchTerm).then((searchResults) => {
+				console.log(
+					"handleSearch, search results to pass to cacheRecipeInfo",
+					searchResults
+				);
+				cacheRecipeInfo(searchResults.map((recipe) => recipe.id));
+			});
+
+			setSearchTermsArray(cleanSearchTerm.split("%2C"));
+			console.log("searchTermsArray", searchTermsArray);
+		}
 	};
+
 	const handleSaveClick = (recipe) => {
 		// TODO construct query and an call API to retrieve full recipe info and store in array
 		console.log("handle save click", recipe.id, recipe.title);
@@ -81,6 +126,11 @@ function App() {
 			})
 		);
 	};
+	const handleAddToExcludeList = (ingredient) => {
+		console.log("handleAddToExcludeList name", ingredient.name);
+		setExcludeList([...excludeList, ingredient.name]);
+		handleRemoveMissingIngredient(ingredient.id);
+	};
 	// Process form string to API compliant search string
 	// 		Replace line breaks and commas with '%2C'
 	const processSearchTerm = (searchTerm) =>
@@ -88,14 +138,10 @@ function App() {
 
 	// Call spoonacular API and push results to state
 	const getResult = async (searchTerm) => {
-		console.log("searchterm", searchTerm);
-		if (searchTerm === undefined) {
-			searchTerm = searchTermsArray.join("%2C");
-		}
 		const returnCount = resultLimit;
 
 		const response = await fetch(
-			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${searchTerm}&number=${returnCount}&ignorePantry=true&ranking=1`,
+			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?ingredients=${searchTerm}&number=${returnCount}&ignorePantry=true&ranking=${priority.minimizeMissed}`,
 			{
 				method: "GET",
 				headers: {
@@ -107,11 +153,72 @@ function App() {
 		);
 		console.log("App got response", response);
 		const data = await response.json();
-		console.log("got api data", data);
-		setResultRecipes(data);
+		console.log("getResult simple json data", data);
+		setResultRecipes([...resultRecipes, ...data]);
 		console.log("results set", resultRecipes);
 		return data;
 	};
+	const getResultComplex = async (searchTerm) => {
+		console.log(searchTerm);
+		// const exampleQueryObj = {
+		// 	limitLicense: "true",
+		// 	offset: "0",
+		// 	number: "10",
+		// 	intolerances: "peanut, shellfish",
+		// 	ranking: "2",
+		// 	excludeIngredients: "coconut, mango",
+		// 	cuisine: "american",
+		// 	query: "",
+		// 	includeIngredients: "onions, lettuce, tomato",
+		// 	type: "",
+		// 	equipment: "",
+		// };
+		const queryObj = {
+			limitLicense: "false",
+			// offset: "0",
+			// number: resultLimit,
+			// intolerances: "peanut, shellfish",
+			ranking: "2",
+			excludeIngredients: "pineapple",
+			// cuisine: "american",
+			// query: "",
+			includeIngredients: "black beans, beef, cheddar"
+			// type: "",
+			// equipment: "",
+		};
+		let queryString = "";
+		for (let param in queryObj) {
+			// console.log(param,queryObj[param])
+			if (queryObj[param] !== "") {
+				queryString = queryString.concat(
+					"&" + param + "=" + queryObj[param]
+				);
+			}
+		}
+		queryString = queryString.substring(1).replace(/,/g, "%2C").replace(/ /g, "");
+		console.log("getResultComplex - query", queryString);
+
+		const response = await fetch(
+			`https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?${queryString}`,
+			{
+				method: "GET",
+				headers: {
+					"x-rapidapi-key": apiKey,
+					"x-rapidapi-host":
+						"spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+				},
+			}
+		);
+		const data = await response.json()
+		// send result recipe list to cached state
+		await console.log('getResultComplex json data', data, data.results)
+		setResultRecipes([...resultRecipes,...data.results])
+		console.log("getResultComplex results set", resultRecipes)
+		// return data for further processing
+		return data
+	};
+	//  API call to retrieve single recipe in full, rather than multiple
+	//	  	 not sure there is a reason to include
 	// const getRecipe = async (id = 567587) => {
 	// 	//492601, 492601, 567587
 	// 	console.log("getRecipe", id);
@@ -174,11 +281,12 @@ function App() {
 		if (resultRecipes) {
 			// const currentMissingIngredients = new Set();
 			// resultRecipes
-			// console.log("useEffect result recipes", resultRecipes);
+			console.log("useEffect result recipes", resultRecipes);
 
 			const missingSet = new Set();
 
 			resultRecipes.forEach((recipe) => {
+				console.log("useEffect resultRecipes.forEach recipe", recipe)
 				if (recipe.missedIngredientCount > 0) {
 					// console.log(recipe);
 					recipe.missedIngredients.forEach((mi) => {
@@ -193,7 +301,7 @@ function App() {
 			});
 			console.log("pre-state missingSet", missingSet);
 			setMissingIngredients(missingSet);
-			console.log("state - missingIngredients", missingIngredients);
+			// console.log("state - missingIngredients", missingIngredients);
 		} else {
 			console.log("useEffect no data");
 		}
@@ -205,7 +313,8 @@ function App() {
 	const loadedResults = () => {
 		return (
 			<Results
-				handleRefreshRecipes={getResult}
+				handleAddToExcludeList={handleAddToExcludeList}
+				handleRefreshRecipes={handleSearch}
 				handleAddSearchTerm={handleAddSearchTerm}
 				handleSaveClick={handleSaveClick}
 				handleNopeClick={handleNopeClick}
@@ -218,9 +327,11 @@ function App() {
 	};
 	const getSavedRecipeInfoByID = (id) => {
 		// console.log("getSavedRecipeInfoByID - saved recipes:", savedRecipeInfo,"this ID:", id)
-		const result = savedRecipeInfo.filter((recipe) => recipe.id === parseInt(id));
+		const result = savedRecipeInfo.filter(
+			(recipe) => recipe.id === parseInt(id)
+		);
 		// console.log('gSRIBID result', result)
-		return result[0]
+		return result[0];
 	};
 
 	return (
