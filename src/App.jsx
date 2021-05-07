@@ -18,7 +18,7 @@ function App() {
 	const [shoppingList, setShoppingList] = useState([]);
 	// const [resultLimit, setResultLimit] = useState(5);
 	const apiKey = "6d8cba578amshebba4e821ebc3abp1fecbajsndb5067a609b4";
-	const resultLimit = 3;
+	const resultLimit = 20;
 	// Search form results handler
 	//
 	const handleSearch = (searchTerm) => {

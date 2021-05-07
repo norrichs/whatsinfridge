@@ -7,7 +7,7 @@ const Header = () => {
 
 	return (
 		<header>
-			<div><FontAwesomeIcon icon={faUtensils}/></div>
+			<div className="logo"><FontAwesomeIcon icon={faUtensils}/></div>
 			<nav>
 				<NavLink to='/'><div>search</div></NavLink>
 				<NavLink to='/Results'><div>results</div></NavLink>

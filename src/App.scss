@@ -12,16 +12,26 @@ header {
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
-	height: 2em;
+	// height: 2em;
 	background-color: black;
+	padding: 5px;
+	.logo{
+		color: orange;
+		font-size: 2em;
+	}
+	nav {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: flex-end;
+		gap: 10px;
+	}
+	a {
+		color: orange;
+		text-decoration: none;
+	}
+	
 }
-header nav {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-around;
-	gap: 10px;
-}
-
 .search-page {
 	height: 100vh;
 	display: flex;
