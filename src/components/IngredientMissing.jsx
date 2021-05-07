@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faThumbsUp, faTimesCircle, faShoppingCart, faBan } from "@fortawesome/free-solid-svg-icons";
+import {faThumbsUp, faShoppingCart} from "@fortawesome/free-solid-svg-icons";
 
 const IngredientMissing = ({
 	ingredient,
@@ -21,10 +21,11 @@ const IngredientMissing = ({
 	const handleGet = (ingredient) => {
 		handleAddToShoppingList(ingredient)
 	};
-	const handleExclude = (ingredient) => {
+	// Currently disabled
+	// const handleExclude = (ingredient) => {
 
-		handleAddToExcludeList(ingredient)
-	};
+	// 	handleAddToExcludeList(ingredient)
+	// };
 
 	return (
 		<div className="missing-ingredient">
@@ -35,9 +36,12 @@ const IngredientMissing = ({
 					<FontAwesomeIcon style={{color: "green"}} icon={faThumbsUp} />
 				</button>
 				<button onClick={() => handleGet(ingredient)}><FontAwesomeIcon style={{color: "cornflowerblue"}} icon={faShoppingCart} /></button>
-				<button onClick={() => handleExclude(ingredient)}>
+			
+			{/* Ban button is currently disabled as searching with exclusion list not implemented */}
+				{/* <button onClick={() => handleExclude(ingredient)}>
 				<FontAwesomeIcon style={{color: "red"}} icon={faBan} />
-				</button>
+				</button> */}
+			
 			</div>
 		</div>
 	);
