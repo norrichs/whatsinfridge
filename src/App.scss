@@ -12,6 +12,8 @@ header {
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
+	height: 2em;
+	background-color: black;
 }
 header nav {
 	display: flex;
@@ -56,12 +58,23 @@ form.multi-item-input {
 		border-color: unset;
 		border-image: unset;
 		border-style: unset;
-		font-size: 1.25em;
+		font-size: 2.5em;
 		border-radius: 5px 5px 0 0;
+
+		color: orange;
 	}
+	textarea:focus{
+		background-color: rgba(0, 0, 0, 0.4);
+		outline: none;
+		color: orange;
+		// font-size: 1.5em;
+
+	}
+	
 	textarea::placeholder {
 		text-align: center;
-		color: orange;
+		color: rgb(189, 123, 0);
+		font-size: .75em;
 	}
 	input {
 		margin: 0 auto;
