@@ -189,7 +189,10 @@ form.multi-item-input {
 	.rc-text {
 		grid-row: 2 / 5;
 		grid-column: 2 / 3;
+		
 		padding-left: 10px;
+		overflow: hidden;
+		font-size: .5em;
 	}
 	.rc-button-nope {
 		height: 2em;

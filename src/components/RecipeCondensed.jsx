@@ -19,6 +19,25 @@ const RecipeCondensed = ({
 		console.log("handleRecipeClick", recipe);
 		history.push(`/Recipe/${recipe.id}`)
 	};
+	const missedIngredients = () => {
+		let missedList = null;
+		if(recipe.missedIngredients.length > 0){
+			missedList = recipe.missedIngredients.map((ingredient)=>{
+				 return (
+					 <div>{ingredient.name}</div>
+				 )
+			})
+		}else{
+			return <div>none</div>
+		}
+
+		return (
+			<div>
+				<div>missing:</div>
+				{missedList}
+			</div>
+		)
+	}
 
 	return (
 		<div className="recipe-condensed">
@@ -34,7 +53,7 @@ const RecipeCondensed = ({
 			<div className="rc-title">
 				{recipe.title}
 			</div>
-			<div className="rc-text">{recipe.image}</div>
+			<div className="rc-text">{missedIngredients()}</div>
 			<div
 				className="rc-button-nope"
 				onClick={() => {
